@@ -20,7 +20,9 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "predeploy-storybook": "npm run build-storybook",
+    "deploy-storybook": "gh-pages -d storybook-static -r git@github.com:gazedash/onetwotrip-test-task-storybook.git"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.11",
