@@ -3,9 +3,9 @@ import { combineReducers } from "redux";
 import actions from "./actions";
 import data from "./data.json";
 
-const flightsState = data.flights;
+export const flightsState = data.flights;
 const defaultSelectedCarrier = "All carriers";
-const carriersState = [
+export const carriersState = [
   defaultSelectedCarrier,
   ...Array.from(new Set(flightsState.map(item => item.carrier)))
 ];
