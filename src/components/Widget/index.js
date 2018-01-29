@@ -1,7 +1,16 @@
 // @flow
-import React from "react";
+import * as React from "react";
+import {
+  select,
+  option,
+  FlightRoot,
+  FlightDest,
+  FlightCarrier,
+  FlightDate,
+  Title
+} from "../StyledComponents";
 
-type FlightProps = {
+export type FlightProps = {
   id: number,
   direction: {
     from: string,
@@ -14,7 +23,7 @@ type FlightProps = {
   formatDate: (uglyDate: Date) => string
 };
 
-const prettyDate = (uglyDate: Date | string) => {
+export const prettyDate = (uglyDate: Date | string) => {
   const monthes = [
     "January",
     "February",
@@ -44,7 +53,7 @@ const prettyDate = (uglyDate: Date | string) => {
   return `${date} ${time}`;
 };
 
-const Flight = ({
+export const Flight = ({
   direction: { from, to },
   departure,
   arrival,
@@ -52,39 +61,51 @@ const Flight = ({
   formatDate = prettyDate
 }: FlightProps) => {
   return (
-    <div>
-      <h5>
+    <FlightRoot>
+      <FlightDest>
         {from} - {to}
-      </h5>
-      {`Departs ${formatDate(departure)} Arrives ${formatDate(arrival)}`}
+      </FlightDest>
+      <div>
+        Departs <FlightDate>{formatDate(departure)}</FlightDate> Arrives{" "}
+        <FlightDate>{formatDate(arrival)}</FlightDate>
+      </div>
 
-      <h5>{carrier}</h5>
-    </div>
+      <FlightCarrier>{carrier}</FlightCarrier>
+    </FlightRoot>
   );
 };
 
-type WidgetProps = {
+export type WidgetProps = {
   carriers: string[],
+  selected: string,
   onSelect: (id: number) => void,
-  flights: FlightProps[]
+  flights: FlightProps[],
+  selectComponent: (props: *) => React$Element<*>,
+  flightComponent: (props: FlightProps) => React$Element<*>,
+  optionComponent: (props: *) => React$Element<*>,
+  titleComponent: (props: *) => React$Element<*>
 };
 
 export const Widget = ({
   carriers = [],
   selected,
   onSelect = (id: number) => {},
-  flights = []
+  flights = [],
+  selectComponent: Select = select,
+  optionComponent: Option = option,
+  flightComponent: FlightItem = Flight,
+  titleComponent: TitleItem = Title
 }: WidgetProps) => {
   return (
     <div>
       {carriers.length ? (
-        <select value={selected} onChange={onSelect}>
-          {carriers.map(carrier => <option key={carrier}>{carrier}</option>)}
-        </select>
+        <Select value={selected} onChange={onSelect}>
+          {carriers.map(carrier => <Option key={carrier}>{carrier}</Option>)}
+        </Select>
       ) : null}
       <div>
-        {flights.length ? "Flights" : "No flights available"}
-        {flights.map(flight => <Flight key={flight.id} {...flight} />)}
+        <TitleItem>{flights.length ? "Flights" : "No flights available"}</TitleItem>
+        {flights.map(flight => <FlightItem key={flight.id} {...flight} />)}
       </div>
     </div>
   );
