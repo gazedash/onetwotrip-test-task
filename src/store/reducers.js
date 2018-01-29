@@ -1,7 +1,7 @@
 // @flow
 import { combineReducers } from "redux";
 import actions from "./actions";
-import data from "../../data.json";
+import data from "./data.json";
 
 const flightsState = data.flights;
 const defaultSelectedCarrier = "All carriers";
